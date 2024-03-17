@@ -1,0 +1,31 @@
+version: '3'
+services: 
+  strapi_server:
+    image: poomport/ecom-app:1.1.0
+    container_name: ced-app
+    restart: always
+    ports:
+      - 1337:1337 
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_SSL: false
+    env_file: 
+      - .env
+  db:
+    container_name: ced-db
+    image: postgres:15-bullseye
+    restart: always
+    volumes:
+         - ./database/data:/var/lib/postgres/data
+    ports:
+      - 5432:5432
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
